@@ -13,6 +13,34 @@ class Test_StudentLogicController(unittest.TestCase):
                 'D1', 'D2', 'D3',
                 'Others']
             )
+    
+    def test_addStudentExamSchedule(self):
+        addStudentExamScheduleJson = {
+            'name': "integration1",
+            'lifegroup': "Others",
+            'modules': [
+                {
+                    'code': "integration1",
+                    'date': '02',
+                    'month': 'FEB',
+                    'hour': '02',
+                    'minute': '02',
+                    'location': 'integration'
+                },
+                {
+                    'code': "integration2",
+                    'date': '03',
+                    'month': 'FEB',
+                    'hour': '03',
+                    'minute': '03',
+                    'location': 'integration'
+                }
+            ]
+        }
+        self.assertFalse(
+            app.studentLogicController
+            .addStudentExamSchedule(addStudentExamScheduleJson)
+            )
 
 
 if __name__ == '__main__':

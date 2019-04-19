@@ -1,0 +1,2 @@
+class ForeignKeyException(Exception):
+    pass

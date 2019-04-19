@@ -25,11 +25,14 @@ class DateTime(db.Model):
         ),
         {})
     prayerSlots = db.relationship(
-        'PrayerSlot', backref='dateTime', lazy=True)
+        'PrayerSlot', backref='dateTime',
+        lazy=True, cascade="all, delete-orphan")
 
-    def __init__(self, date, month):
-        self.date = date
-        self.month = month
+    def __init__(self, dateDate, dateMonth, timeHour, timeMinute):
+        self.dateDate = dateDate
+        self.dateMonth = dateMonth
+        self.timeHour = timeHour
+        self.timeMinute = timeMinute
 
     def __repr__(self):
         return '<DateTime: {}{} - {}{}>'.format(

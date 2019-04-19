@@ -9,9 +9,13 @@ class Student(db.Model):
         db.String(),
         db.ForeignKey('lifegroup.name', ondelete="SET NULL"),
         nullable=True)
-    modules = db.relationship('StudentModule', backref='student', lazy=True)
+    modules = db.relationship(
+        'StudentModule',
+        backref='student',
+        lazy=True,
+        cascade="all, delete-orphan")
 
-    def __init__(self, name, lifegroup=None):
+    def __init__(self, name, lifegroup):
         self.name = name
         self.lifegroup = lifegroup
 

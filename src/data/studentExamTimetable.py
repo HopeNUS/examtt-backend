@@ -1,12 +1,32 @@
+import json
+
+
 class StudentExamTimetable(object):
-    students = []
     exams = []
+    studentsMap = {}
 
     def addExam(self, id, code, time, date, location, meetingPoint):
-        self.exams.append({id, code, date, time, location, meetingPoint})
+        self.exams.append({
+            'id': id,
+            'code': code,
+            'date': date,
+            'time': time,
+            'location': location,
+            'meetingPoint': meetingPoint})
 
-    def addStudent(self, name, lifegroup, modules):
-        self.students.append({name, lifegroup, modules})
+    def addStudent(self, name, lifegroup, module):
+        if name not in self.studentsMap:
+            self.studentsMap[name] = {'lifegroup': lifegroup, 'module': []}
+        self.studentsMap[name]['module'].append(module)
 
     def serialise(self):
-        return {self.exams, self.students}
+        students = []
+        for name, info in self.studentsMap.items():
+            students.append({
+                'name': name,
+                'lifegroup': info['lifegroup'],
+                'module': info['module']})
+
+        return json.dumps(
+            {'exams': self.exams, 'students': students},
+            sort_keys=True, indent=4)

@@ -6,7 +6,8 @@ class Date(db.Model):
 
     date = db.Column(db.String(2), primary_key=True)
     month = db.Column(db.String(3), primary_key=True)
-    dateTimes = db.relationship('DateTime', lazy=True)
+    dateTimes = db.relationship(
+        'DateTime', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, date, month):
         self.date = date

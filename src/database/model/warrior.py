@@ -6,7 +6,8 @@ class Warrior(db.Model):
 
     name = db.Column(db.String(), primary_key=True)
     prayerSlots = db.relationship(
-        'PrayerSlotWarrior', backref='warrior', lazy=True)
+        'PrayerSlotWarrior', backref='warrior',
+        lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, name):
         self.name = name
