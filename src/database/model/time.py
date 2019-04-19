@@ -6,7 +6,8 @@ class Time(db.Model):
 
     hour = db.Column(db.String(2), primary_key=True)
     minute = db.Column(db.String(2), primary_key=True)
-    dateTimes = db.relationship('DateTime', lazy=True)
+    dateTimes = db.relationship(
+        'DateTime', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, hour, minute):
         self.hour = hour

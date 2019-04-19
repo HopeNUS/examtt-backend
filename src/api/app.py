@@ -1,9 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from .config import Config
+from .config import DevelopementConfig
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object(DevelopementConfig)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 

@@ -1,4 +1,6 @@
 from .logicController import LogicController
+from ..exceptions.foreignKeyException import ForeignKeyException
+from ..exceptions.uniqueException import UniqueException
 
 
 class StudentLogicController(LogicController):
@@ -14,4 +16,23 @@ class StudentLogicController(LogicController):
         Populates database with the given schedule information
         Returns true if successful, false otherwise
         '''
-        pass
+        studentName = addStudentExamScheduleJson['name']
+        self.getDb().deleteStudentRecord(studentName)
+        lifegroup = addStudentExamScheduleJson['lifegroup']
+        modules = addStudentExamScheduleJson['modules']
+        failures = []
+        for module in modules:
+            code = module['code']
+            date = module['date']
+            month = module['month']
+            hour = module['hour']
+            minute = module['minute']
+            location = module['location']
+            try:
+                self.getDb().addExam(
+                    studentName, lifegroup, code, date,
+                    month, hour, minute, location)
+            except (ForeignKeyException, UniqueException) as e:
+                failures.append((code, e))
+
+        return failures

@@ -11,7 +11,8 @@ class Location(db.Model):
         nullable=True)
 
     prayerSlots = db.relationship(
-        'PrayerSlot', backref='location', lazy=True)
+        'PrayerSlot', backref='location',
+        lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, name, meetingPoint=None):
         self.name = name

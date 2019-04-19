@@ -13,8 +13,11 @@ class PrayerSlot(db.Model):
         db.Integer,
         db.ForeignKey('date_time.id', ondelete="CASCADE"),
         nullable=False)
+    exams = db.relationship(
+        'Exam', backref='prayerSlot', lazy=True, cascade="all, delete-orphan")
     warriors = db.relationship(
-        'PrayerSlotWarrior', backref='prayer_slot', lazy=True)
+        'PrayerSlotWarrior', backref='prayerSlot',
+        lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, locationName, dateTimeId):
         self.locationName = locationName

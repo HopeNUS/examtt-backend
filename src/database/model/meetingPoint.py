@@ -6,7 +6,8 @@ class MeetingPoint(db.Model):
 
     name = db.Column(db.String(), primary_key=True)
     locations = db.relationship(
-        'Location', backref='MeetingPoint', lazy=True)
+        'Location', backref='MeetingPoint',
+        lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, name):
         self.name = name
