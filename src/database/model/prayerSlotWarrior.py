@@ -1,18 +1,17 @@
-from src.api.app import db
+from src.api.database import db
 
 
 class PrayerSlotWarrior(db.Model):
     __tablename__ = "prayer_slot_warrior"
 
-    id = db.Column(db.Integer, primary_key=True)
     prayerSlotId = db.Column(
         db.Integer,
         db.ForeignKey('prayer_slot.id', ondelete="CASCADE"),
-        nullable=False)
+        nullable=False, primary_key=True)
     warriorName = db.Column(
         db.String(),
         db.ForeignKey('warrior.name', ondelete="CASCADE"),
-        nullable=False)
+        nullable=False, primary_key=True)
 
     def __init__(self, prayerSlotId, warriorName):
         self.prayerSlotId = prayerSlotId

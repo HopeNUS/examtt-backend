@@ -9,7 +9,6 @@ from .model.date import Date
 from .model.time import Time
 from .model.dateTime import DateTime
 from .model.location import Location
-from .model.meetingPoint import MeetingPoint
 from .model.warrior import Warrior
 from .model.prayerSlot import PrayerSlot
 from .model.prayerSlotWarrior import PrayerSlotWarrior
@@ -22,11 +21,15 @@ class DatabaseController(object):
     def __init__(self, db):
         self.db = db
 
-    def deleteStudentRecord(self, studentName):
-        student = Student.query.filter_by(name=studentName).first()
-        if student:
-            self.db.session.delete(student)
+    def deleteRecord(self, model, **kwargs):
+        entity = model.query.filter_by(**kwargs).first()
+        if not entity:
+            return
+        self.db.session.delete(entity)
         self.db.session.flush()
+
+    def deleteStudentRecord(self, studentName):
+        self.deleteRecord(Student, name=studentName)
 
     def getOrCreate(self, model, **kwargs):
         instance = self.db.session.query(model).filter_by(**kwargs).first()
@@ -95,17 +98,26 @@ class DatabaseController(object):
             Entries in database:
                 a PrayerSlotWarrior entry <warriorName, prayerSlot>
         '''
-        pass
+        self.getOrCreate(Warrior, name=warriorName)
+        self.getOrCreate(
+            PrayerSlotWarrior,
+            prayerSlotId=prayerSlot, warriorName=warriorName)
+        self.db.session.commit()
+        return True
 
-    def deletePrayerWarriorSubscription(self, prayerSlotWrriorId):
+    def deletePrayerWarriorSubscription(self, prayerSlotId, warriorName):
         '''
         Adds prayer warrior subscription
 
         Post requirement:
             Entries in database:
-                a no entry with id <prayerSlotWrriorId>
+                a no entry with <prayerSlotId, warriorName>
         '''
-        pass
+        self.deleteRecord(
+            PrayerSlotWarrior,
+            prayerSlotId=prayerSlotId, warriorName=warriorName)
+        self.db.session.commit()
+        return True
 
     def setLocationMeetingPoint(self, location, meetingPoint):
         '''
@@ -116,7 +128,10 @@ class DatabaseController(object):
                 Location entry with name <location> has
                     meeting_point entry as <meetingPoint>
         '''
-        pass
+        locationEntity = self.getOrCreate(Location, name=location)
+        locationEntity.meetingPointName = meetingPoint
+        self.db.session.commit()
+        return True
 
     def getExamTimetable(self, date, month):
         '''
@@ -154,9 +169,13 @@ class DatabaseController(object):
             .join(Location, PrayerSlot.locationName == Location.name)
             .join(Exam, Exam.prayerSlotId == PrayerSlot.id)
             .all()]
-    
-    def getStudentsModule(self):
+
+    def getStudentsModule(self, date=None, time=None, location=None):
         '''
+        @param date = (date, month)
+        @param time = (hour, minute)
+        @param location = location
+
         Fetch and Returns
         [{
             name: studentName,
@@ -168,14 +187,25 @@ class DatabaseController(object):
         '''
         studentIdx = 0
         studentModuleIdx = 1
+
+        query = self.db.session.query(Student, StudentModule)\
+            .join(StudentModule, Student.name == StudentModule.studentName)
+        query = query\
+            .join(Exam, Exam.moduleCode == StudentModule.moduleCode)\
+            .join(PrayerSlot, Exam.prayerSlotId == PrayerSlot.id)
+        if location:
+            query = query.filter_by(locationName=location)
+        query = query.join(DateTime, PrayerSlot.dateTimeId == DateTime.id)
+        if date:
+            query = query.filter_by(dateDate=date[0], dateMonth=date[1])
+        if time:
+            query = query.filter_by(timeHour=time[0], timeMinute=time[1])
+
         return [{
             'name': studentModule[studentIdx].name,
             'lifegroup': studentModule[studentIdx].lifegroup,
             'module': studentModule[studentModuleIdx].moduleCode}
-            for studentModule in self.db.session.query(
-                Student, StudentModule)
-            .join(StudentModule, Student.name == StudentModule.studentName)
-            .all()]
+            for studentModule in query.all()]
 
     def getPrayerSlotTimeTable(
             self, date, month, time=None, meetingPoint=None):
@@ -201,11 +231,19 @@ class DatabaseController(object):
             "dateDate": date,
             "dateMonth": month,
         }
+
         if time:
             filters['timeHour'] = time[0]
             filters['timeMinute'] = time[1]
+
+        query = self.db.session\
+            .query(DateTime, PrayerSlot, Location)\
+            .filter_by(**filters)\
+            .join(PrayerSlot, PrayerSlot.dateTimeId == DateTime.id)\
+            .join(Location, PrayerSlot.locationName == Location.name)\
+
         if meetingPoint:
-            filters['meetingPoint'] = meetingPoint
+            query = query.filter(Location.meetingPointName == meetingPoint)
 
         return [{
             'id': prayerSlot[prayerSlotIdx].id,
@@ -215,12 +253,7 @@ class DatabaseController(object):
             'month': prayerSlot[dateTimeIdx].dateMonth,
             'location': prayerSlot[prayerSlotIdx].locationName,
             'meetingPoint': prayerSlot[locationIdx].meetingPointName}
-            for prayerSlot in self.db.session.query(
-                DateTime, PrayerSlot, Location)
-            .filter_by(**filters)
-            .join(PrayerSlot, PrayerSlot.dateTimeId == DateTime.id)
-            .join(Location, PrayerSlot.locationName == Location.name)
-            .all()]
+            for prayerSlot in query.all()]
 
     def getLifegroup(self):
         '''
@@ -238,3 +271,35 @@ class DatabaseController(object):
         '''
         locationMeetingPoint = LocationMeetingPoint()
         return locationMeetingPoint
+
+    def getPrayerSlotsWarriors(self, date=None, time=None, location=None):
+        '''
+        @param date = (date, month)
+        @param time = (hour, minute)
+        @param location = location
+
+        Fetches and returns the list of prayer slot and warriors
+
+        returns [{
+            prayerSlot: prayerSlotId,
+            warriorName: warriorName
+        }]
+        '''
+
+        query = PrayerSlotWarrior\
+            .query.order_by(PrayerSlotWarrior.prayerSlotId)\
+            .join(PrayerSlot, PrayerSlotWarrior.prayerSlotId == PrayerSlot.id)\
+
+        if location:
+            query = query.filter_by(locationName=location)
+        query = query.join(DateTime, PrayerSlot.dateTimeId == DateTime.id)
+
+        if date:
+            query = query.filter_by(dateDate=date[0], dateMonth=date[1])
+        if time:
+            query = query.filter_by(timeHour=time[0], timeMinute=time[1])
+
+        return [{
+            'prayerSlot': prayerSlotWarrior.prayerSlotId,
+            'warriorName': prayerSlotWarrior.warriorName, }
+            for prayerSlotWarrior in query.all()]

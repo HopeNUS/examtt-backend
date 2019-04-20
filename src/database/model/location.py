@@ -1,4 +1,4 @@
-from src.api.app import db
+from src.api.database import db
 
 
 class Location(db.Model):
