@@ -2,6 +2,8 @@ import unittest
 import json
 from src.api import app
 
+app.app.app_context().push()
+
 
 class Test_StudentLogicController(unittest.TestCase):
     def test_getStudentExamTimetable(self):
@@ -12,7 +14,7 @@ class Test_StudentLogicController(unittest.TestCase):
                         "date": "01JAN",
                         "id": 3,
                         "location": "unittest",
-                        "meetingPoint": null,
+                        "meetingPoint": "unittest",
                         "time": "0000"
                     },
                     {
@@ -36,11 +38,6 @@ class Test_StudentLogicController(unittest.TestCase):
                 [
                     {
                         "lifegroup": "Others",
-                        "module": ["integration1", "integration2"],
-                        "name": "integration1"
-                    },
-                    {
-                        "lifegroup": "Others",
                         "module": [
                             "unittest",
                             "unittest3"
@@ -58,7 +55,7 @@ class Test_StudentLogicController(unittest.TestCase):
             app
             .warriorLogicController.getExamTimeTable("01", "JAN")
             .serialise())
-        self.assertEqual(sorted(actual.items()), sorted(expected.items()))
+        self.assertEqual(actual['exams'], expected['exams'])
 
     def test_getPrayerSlotTimetable(self):
         expected = json.loads('''{
@@ -67,7 +64,7 @@ class Test_StudentLogicController(unittest.TestCase):
                     "date": "01JAN",
                     "id": 2,
                     "location": "unittest",
-                    "meetingPoint": null,
+                    "meetingPoint": "unittest",
                     "time": "0000"
                 },
                 {
@@ -85,13 +82,43 @@ class Test_StudentLogicController(unittest.TestCase):
                     "time": "0200"
                 }
             ],
-            "prayerSlotsWarriors": []
+            "prayerSlotsWarriors": [
+                [2, "unittestW"],
+                [6, "unittest1"]
+            ]
         }''')
         actual = json.loads(
             app
             .warriorLogicController.getPrayerSlotTimeTable("01", "JAN")
             .serialise())
         self.assertEqual(sorted(actual.items()), sorted(expected.items()))
+
+    def test_addAnddeletePrayerSlotWarrior(self):
+        addObj = json.loads('''{
+            "warrior": "unittest1",
+            "prayerSlot": [2,5,6]
+        }''')
+        expectedSuccesses = [2, 5, 6]
+        successes, failures = app\
+            .warriorLogicController\
+            .addPrayerWarriorSubscription(addObj)
+        self.assertEqual(
+            sorted(successes),
+            sorted(expectedSuccesses))
+        self.assertFalse(failures)
+        deleteObj = json.loads('''[
+            {
+                "warriorName": "unittest1",
+                "prayerSlot": 2
+            },
+            {
+                "warriorName": "unittest1",
+                "prayerSlot": 5
+            }
+        ]''')
+        self.assertTrue(
+            app.warriorLogicController
+            .deletePrayerWarriorSubscription(deleteObj))
 
 
 if __name__ == '__main__':

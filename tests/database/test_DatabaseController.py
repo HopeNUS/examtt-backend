@@ -3,9 +3,10 @@ from src.api import app
 from src.exceptions.foreignKeyException import ForeignKeyException
 from src.exceptions.uniqueException import UniqueException
 
+app.app.app_context().push()
+
 
 class Test_DatebaseController(unittest.TestCase):
-
     dbCtrl = app.studentLogicController.getDb()
 
     def test_addExamValid(self):
@@ -82,9 +83,25 @@ class Test_DatebaseController(unittest.TestCase):
         self.assertTrue(self.dbCtrl.getPrayerSlotTimeTable(
             "01", "JAN", time=("02", "00")))
         self.assertFalse(self.dbCtrl.getPrayerSlotTimeTable("11", "JAN"))
+        self.assertTrue(self.dbCtrl.getPrayerSlotTimeTable(
+            "01", "JAN", ("00", "00"), "unittest"))
 
     def test_retrieveStudentsModule(self):
         self.assertTrue(self.dbCtrl.getStudentsModule())
+
+    def test_addPrayerWarriorSubscription(self):
+        self.assertTrue(
+            self.dbCtrl.addPrayerWarriorSubscription("unittestW", 2))
+        self.assertRaises(
+            ForeignKeyException,
+            self.dbCtrl.addPrayerWarriorSubscription,
+            "unittestW", 9999,)
+
+    def test_deletePrayerWarriorSubscription(self):
+        self.assertTrue(
+            self.dbCtrl.addPrayerWarriorSubscription("unittestDel", 2))
+        self.assertTrue(
+            self.dbCtrl.deletePrayerWarriorSubscription(2, "unittestDel"))
 
 
 if __name__ == '__main__':

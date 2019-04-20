@@ -21,6 +21,7 @@ class StudentLogicController(LogicController):
         lifegroup = addStudentExamScheduleJson['lifegroup']
         modules = addStudentExamScheduleJson['modules']
         failures = []
+        successes = []
         for module in modules:
             code = module['code']
             date = module['date']
@@ -34,5 +35,7 @@ class StudentLogicController(LogicController):
                     month, hour, minute, location)
             except (ForeignKeyException, UniqueException) as e:
                 failures.append((code, e))
+            else:
+                successes.append(code)
 
-        return failures
+        return successes, failures

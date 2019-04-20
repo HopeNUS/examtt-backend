@@ -2,8 +2,10 @@ import json
 
 
 class StudentExamTimetable(object):
-    exams = []
-    studentsMap = {}
+
+    def __init__(self):
+        self.exams = []
+        self.studentsMap = {}
 
     def addExam(self, id, code, time, date, location, meetingPoint):
         self.exams.append({

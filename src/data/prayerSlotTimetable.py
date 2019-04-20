@@ -2,8 +2,10 @@ import json
 
 
 class PrayerSlotTimetable(object):
-    prayerSlots = []
-    prayerSlotsWrriors = []
+
+    def __init__(self):
+        self.prayerSlots = []
+        self.prayerSlotsWrriors = []
 
     def addPrayerSlot(self, id, location, meetingPoint, date, time):
         self.prayerSlots.append({
@@ -14,7 +16,7 @@ class PrayerSlotTimetable(object):
             'time': time,
         })
 
-    def prayerSlotsWrrior(self, prayerSlotId, warriorName):
+    def addPrayerSlotsWarrior(self, prayerSlotId, warriorName):
         self.prayerSlotsWrriors.append((prayerSlotId, warriorName, ))
 
     def serialise(self):

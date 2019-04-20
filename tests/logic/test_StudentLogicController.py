@@ -1,6 +1,8 @@
 import unittest
 from src.api import app
 
+app.app.app_context().push()
+
 
 class Test_StudentLogicController(unittest.TestCase):
     def test_getLifegroup(self):
@@ -13,7 +15,7 @@ class Test_StudentLogicController(unittest.TestCase):
                 'D1', 'D2', 'D3',
                 'Others']
             )
-    
+
     def test_addStudentExamSchedule(self):
         addStudentExamScheduleJson = {
             'name': "integration1",
@@ -37,10 +39,11 @@ class Test_StudentLogicController(unittest.TestCase):
                 }
             ]
         }
-        self.assertFalse(
-            app.studentLogicController
+
+        successes, failures = app.studentLogicController\
             .addStudentExamSchedule(addStudentExamScheduleJson)
-            )
+        self.assertTrue(successes)
+        self.assertFalse(failures)
 
 
 if __name__ == '__main__':
