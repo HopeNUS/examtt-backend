@@ -1,18 +1,16 @@
 import unittest
-from src.api import app
+from tests.setup_test_db import Session
+from src.logic.studentLogicController import StudentLogicController
 
-app.app.app_context().push()
+studentLogicController = StudentLogicController(Session)
 
 
 class Test_StudentLogicController(unittest.TestCase):
     def test_getLifegroup(self):
         self.assertEqual(
-            app.studentLogicController.getLifegroups(),
+            studentLogicController.getLifegroups(),
             [
                 'A1', 'A2', 'A3',
-                'B1', 'B2', 'B3',
-                'C1', 'C2', 'C3',
-                'D1', 'D2', 'D3',
                 'Others']
             )
 
@@ -40,7 +38,7 @@ class Test_StudentLogicController(unittest.TestCase):
             ]
         }
 
-        successes, failures = app.studentLogicController\
+        successes, failures = studentLogicController\
             .addStudentExamSchedule(addStudentExamScheduleJson)
         self.assertTrue(successes)
         self.assertFalse(failures)

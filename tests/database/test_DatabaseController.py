@@ -1,13 +1,15 @@
 import unittest
-from src.api import app
+from tests.setup_test_db import Session
 from src.exceptions.foreignKeyException import ForeignKeyException
 from src.exceptions.uniqueException import UniqueException
+from src.logic.studentLogicController import StudentLogicController
 
-app.app.app_context().push()
+studentLogicController = StudentLogicController(Session)
 
 
 class Test_DatebaseController(unittest.TestCase):
-    dbCtrl = app.studentLogicController.getDb()
+
+    dbCtrl = studentLogicController.getDb()
 
     def test_addExamValid(self):
         moduleCode = "unittest"
