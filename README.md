@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/HopeNUS/examtt-backend.svg?branch=master)](https://travis-ci.com/HopeNUS/examtt-backend)
+
 ## Setting up project development
 
 1. Clone this repository
