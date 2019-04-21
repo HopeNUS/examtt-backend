@@ -31,7 +31,7 @@
 5) execute `python -m src.dbManage db migrate` to **generate the code** to create the database
 6) execute `python -m src.dbManage db upgrade` to create the database
 
-### Running the program
+### Starting the server
 
 1) make sure you are using the correct virtual environment
 2) cd to `[PROJECT_DIRECTORY]`
@@ -41,4 +41,8 @@
 
 + Test Driver: python unittest
 
-*I have yet figure out how to run from command line, but if you're using visual studio code it should be fairly easy*
+1) Set up testing database named `test_examtt`
+2) Create a superuser named `postgres`
+3) Run `python -m tests.setup_test_db` to setup test database
+4) Run `python -m tests.runner` to execute tests
+5) Navigate to `[PROJECT_DIRECTORY]/reports` for the test reports
