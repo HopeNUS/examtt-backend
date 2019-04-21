@@ -1,2 +1,2 @@
 web: gunicorn src.api.app:app
-release: python manage.py db upgrade
+release: python src/dbManage.py db upgrade
