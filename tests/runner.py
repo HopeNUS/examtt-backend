@@ -2,6 +2,7 @@ import sys
 import unittest
 from HtmlTestRunner import HTMLTestRunner
 
+import tests.api.test_validator as apiValidator
 import tests.database.test_DatabaseController as dbCtrl
 import tests.logic.test_StudentLogicController as stuLogicCtrl
 import tests.logic.test_WarriorLogicController as warLogicCtrl
@@ -9,7 +10,7 @@ import tests.logic.test_WarriorLogicController as warLogicCtrl
 loader = unittest.TestLoader()
 suite = unittest.TestSuite()
 
-for module in [dbCtrl, stuLogicCtrl, warLogicCtrl]:
+for module in [apiValidator, dbCtrl, stuLogicCtrl, warLogicCtrl]:
     suite.addTests(loader.loadTestsFromModule(module))
 
 runner = unittest.TextTestRunner(verbosity=3)

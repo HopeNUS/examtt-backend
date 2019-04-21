@@ -1,4 +1,11 @@
 from flask import request, jsonify
+import validator
+
+ERROR_INVALID_JSON = "Invalid JSON Format [{}]"
+
+
+def apiError(msg):
+    return {"error": msg}
 
 
 def defineRoutes(app, studentLogicController, warriorLogicController):
@@ -35,28 +42,41 @@ def defineRoutes(app, studentLogicController, warriorLogicController):
             .serialise()
 
     @app.route(
-        "/exams",
-        methods=["POST"])
-    def addStudentExamTimetable():
-        successes, failures = studentLogicController\
-            .addStudentExamSchedule(request.get_json())
-        return jsonify(successes=successes, failures=failures)
-
-    @app.route(
         "/lifegroup",
         methods=["GET"])
     def getLifegroups():
         return jsonify(studentLogicController.getLifegroups())
 
+    @app.route(
+        "/exams",
+        methods=["POST"])
+    def addStudentExamTimetable():
+        requestJson = request.get_json()
+        if not validator\
+                .validateAddStudentExamScheduleJson(requestJson):
+            return jsonify(apiError(ERROR_INVALID_JSON))
+
+        successes, failures = studentLogicController\
+            .addStudentExamSchedule(requestJson)
+        return jsonify(successes=successes, failures=failures)
+
     @app.route("/prayers", methods=["POST"])
     def addPrayerSlotWarrior():
+        requestJson = request.get_json()
+        if not validator\
+                .validateAddPrayerWarriorSubscriptionJson(requestJson):
+            return jsonify(apiError(ERROR_INVALID_JSON))
         successes, failures = warriorLogicController\
-            .addPrayerWarriorSubscription(request.get_json())
+            .addPrayerWarriorSubscription(requestJson)
         return jsonify(successes=successes, failures=failures)
 
     @app.route("/prayers/delete", methods=["POST"])
     def deletePrayerSlotWarrior():
+        requestJson = request.get_json()
+        if not validator\
+                .validateDeletePrayerWarriorSubscriptionJson(requestJson):
+            return jsonify(apiError(ERROR_INVALID_JSON))
         if warriorLogicController\
-                .deletePrayerWarriorSubscription(request.get_json()):
+                .deletePrayerWarriorSubscription(requestJson):
             return "Deleted"
         return "Failed"
