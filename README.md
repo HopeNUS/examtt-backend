@@ -12,16 +12,18 @@
 ### Python
 
 1. Set up virtual environment
+
     1.1. download [Homebrew](https://brew.sh/)
+  
     1.2. download [pyenv](https://github.com/pyenv/pyenv) with homebrew
+  
     1.3. download [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv) with homebrew
+  
     1.4. setup and activate the virtual environment
     
-
 2. Downloading dependencies
     
-    2.1. download requirements in requirements.txt with the script. 
-    `pip install -r requirements.txt`
+    2.1. download requirements in requirements.txt with the script. `pip install -r requirements.txt`
     
     2.2. download Postgres with homebrew following [this](https://gist.github.com/ibraheem4/ce5ccd3e4d7a65589ce84f2a3b7c23a3) link
 
