@@ -38,8 +38,8 @@
 
 ## Starting the server
 
-2) cd to `[PROJECT_DIRECTORY]`
-3) execute `python -m src.api.app`
+1) cd to `[PROJECT_DIRECTORY]`
+2) execute `python -m src.api.app`
 
 ## Running tests
 
