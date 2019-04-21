@@ -11,3 +11,8 @@ class DevelopementConfig(Config):
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_DATABASE_URI = "postgresql://jeremiah-ang:\
         @localhost:5432/examtt"
+
+
+config = DevelopementConfig
+if os.environ.get('FLASK_ENV', "developement") == "production":
+    config = Config

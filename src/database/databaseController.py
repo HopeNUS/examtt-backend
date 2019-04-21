@@ -1,6 +1,7 @@
 from sqlalchemy import exc
 from psycopg2.errors import UniqueViolation
 from ..data.locationMeetingPoint import LocationMeetingPoint
+from ..api.database import Session
 from .model.lifegroup import Lifegroup
 from .model.student import Student
 from .model.module import Module
@@ -8,6 +9,7 @@ from .model.studentModule import StudentModule
 from .model.date import Date
 from .model.time import Time
 from .model.dateTime import DateTime
+from .model.meetingPoint import MeetingPoint
 from .model.location import Location
 from .model.warrior import Warrior
 from .model.prayerSlot import PrayerSlot
@@ -21,25 +23,34 @@ class DatabaseController(object):
     def __init__(self, db):
         self.db = db
 
-    def deleteRecord(self, model, **kwargs):
+    def startSession(self):
+        return Session()
+
+    def closeSession(self, session):
+        session.close()
+
+    def deleteRecord(self, session, model, **kwargs):
         entity = model.query.filter_by(**kwargs).first()
         if not entity:
             return
-        self.db.session.delete(entity)
-        self.db.session.flush()
+        entity = session.merge(entity)
+        session.delete(entity)
+        session.flush()
 
     def deleteStudentRecord(self, studentName):
-        self.deleteRecord(Student, name=studentName)
+        session = self.startSession()
+        self.deleteRecord(session, Student, name=studentName)
+        self.closeSession(session)
 
-    def getOrCreate(self, model, **kwargs):
-        instance = self.db.session.query(model).filter_by(**kwargs).first()
+    def getOrCreate(self, session, model, **kwargs):
+        instance = session.query(model).filter_by(**kwargs).first()
         if instance:
             return instance, False
 
         try:
             instance = model(**kwargs)
-            self.db.session.add(instance)
-            self.db.session.flush()
+            session.add(instance)
+            session.flush()
         except exc.IntegrityError as e:
             if type(e.orig) is UniqueViolation:
                 raise UniqueException(str(e))
@@ -67,27 +78,31 @@ class DatabaseController(object):
                 a Exam entry <moduleCode, prayerSlotId>
         '''
 
+        session = self.startSession()
         self.getOrCreate(
-            Student, name=studentName, lifegroup=lifegroup)
+            session, Student, name=studentName, lifegroup=lifegroup)
         self.getOrCreate(
-            Module, code=moduleCode)
+            session, Module, code=moduleCode)
         self.getOrCreate(
-            StudentModule, studentName=studentName, moduleCode=moduleCode)
+            session, StudentModule,
+            studentName=studentName, moduleCode=moduleCode)
         self.getOrCreate(
-            Date, date=day, month=month)
+            session, Date, date=day, month=month)
         self.getOrCreate(
-            Time, hour=hour, minute=minute)
+            session, Time, hour=hour, minute=minute)
         dateTime, _ = self.getOrCreate(
-            DateTime, dateDate=day, dateMonth=month,
+            session, DateTime, dateDate=day, dateMonth=month,
             timeHour=hour, timeMinute=minute)
         self.getOrCreate(
-            Location, name=location)
+            session, Location, name=location)
         prayerSlot, _ = self.getOrCreate(
-            PrayerSlot, locationName=location, dateTimeId=dateTime.id)
+            session, PrayerSlot,
+            locationName=location, dateTimeId=dateTime.id)
         self.getOrCreate(
-            Exam, moduleCode=moduleCode, prayerSlotId=prayerSlot.id)
-        self.db.session.commit()
-
+            session, Exam,
+            moduleCode=moduleCode, prayerSlotId=prayerSlot.id)
+        session.commit()
+        self.closeSession(session)
         return True
 
     def addPrayerWarriorSubscription(self, warriorName, prayerSlot):
@@ -98,11 +113,14 @@ class DatabaseController(object):
             Entries in database:
                 a PrayerSlotWarrior entry <warriorName, prayerSlot>
         '''
-        self.getOrCreate(Warrior, name=warriorName)
+        session = self.startSession()
+        self.getOrCreate(session, Warrior, name=warriorName)
         self.getOrCreate(
+            session,
             PrayerSlotWarrior,
             prayerSlotId=prayerSlot, warriorName=warriorName)
-        self.db.session.commit()
+        session.commit()
+        self.closeSession(session)
         return True
 
     def deletePrayerWarriorSubscription(self, prayerSlotId, warriorName):
@@ -113,10 +131,13 @@ class DatabaseController(object):
             Entries in database:
                 a no entry with <prayerSlotId, warriorName>
         '''
+        session = self.startSession()
         self.deleteRecord(
+            session,
             PrayerSlotWarrior,
             prayerSlotId=prayerSlotId, warriorName=warriorName)
-        self.db.session.commit()
+        session.commit()
+        self.closeSession(session)
         return True
 
     def setLocationMeetingPoint(self, location, meetingPoint):
@@ -128,9 +149,12 @@ class DatabaseController(object):
                 Location entry with name <location> has
                     meeting_point entry as <meetingPoint>
         '''
-        locationEntity = self.getOrCreate(Location, name=location)
+        session = self.startSession()
+        locationEntity = self.getOrCreate(
+            session, Location, name=location)
         locationEntity.meetingPointName = meetingPoint
-        self.db.session.commit()
+        session.commit()
+        self.closeSession(session)
         return True
 
     def getExamTimetable(self, date, month):
@@ -149,11 +173,12 @@ class DatabaseController(object):
 
         No changes made to database
         '''
+        session = self.startSession()
         dateTimeIdx = 0
         prayerSlotIdx = 1
         locationIdx = 2
         examIdx = 3
-        return [{
+        result = [{
             'id': exam[examIdx].id,
             'code': exam[examIdx].moduleCode,
             'hour': exam[dateTimeIdx].timeHour,
@@ -162,13 +187,15 @@ class DatabaseController(object):
             'month': exam[dateTimeIdx].dateMonth,
             'location': exam[prayerSlotIdx].locationName,
             'meetingPoint': exam[locationIdx].meetingPointName}
-            for exam in self.db.session.query(
+            for exam in session.query(
                 DateTime, PrayerSlot, Location, Exam)
             .filter_by(dateDate=date, dateMonth=month)
             .join(PrayerSlot, PrayerSlot.dateTimeId == DateTime.id)
             .join(Location, PrayerSlot.locationName == Location.name)
             .join(Exam, Exam.prayerSlotId == PrayerSlot.id)
             .all()]
+        self.closeSession(session)
+        return result
 
     def getStudentsModule(self, date=None, time=None, location=None):
         '''
@@ -185,10 +212,11 @@ class DatabaseController(object):
 
         No changes made to database
         '''
+        session = self.startSession()
         studentIdx = 0
         studentModuleIdx = 1
 
-        query = self.db.session.query(Student, StudentModule)\
+        query = session.query(Student, StudentModule)\
             .join(StudentModule, Student.name == StudentModule.studentName)
         query = query\
             .join(Exam, Exam.moduleCode == StudentModule.moduleCode)\
@@ -201,11 +229,13 @@ class DatabaseController(object):
         if time:
             query = query.filter_by(timeHour=time[0], timeMinute=time[1])
 
-        return [{
+        result = [{
             'name': studentModule[studentIdx].name,
             'lifegroup': studentModule[studentIdx].lifegroup,
             'module': studentModule[studentModuleIdx].moduleCode}
             for studentModule in query.all()]
+        self.closeSession(session)
+        return result
 
     def getPrayerSlotTimeTable(
             self, date, month, time=None, meetingPoint=None):
@@ -224,6 +254,8 @@ class DatabaseController(object):
 
         No changes made to database
         '''
+        session = self.startSession()
+
         dateTimeIdx = 0
         prayerSlotIdx = 1
         locationIdx = 2
@@ -236,7 +268,7 @@ class DatabaseController(object):
             filters['timeHour'] = time[0]
             filters['timeMinute'] = time[1]
 
-        query = self.db.session\
+        query = session\
             .query(DateTime, PrayerSlot, Location)\
             .filter_by(**filters)\
             .join(PrayerSlot, PrayerSlot.dateTimeId == DateTime.id)\
@@ -245,7 +277,7 @@ class DatabaseController(object):
         if meetingPoint:
             query = query.filter(Location.meetingPointName == meetingPoint)
 
-        return [{
+        result = [{
             'id': prayerSlot[prayerSlotIdx].id,
             'hour': prayerSlot[dateTimeIdx].timeHour,
             'minute': prayerSlot[dateTimeIdx].timeMinute,
@@ -254,6 +286,8 @@ class DatabaseController(object):
             'location': prayerSlot[prayerSlotIdx].locationName,
             'meetingPoint': prayerSlot[locationIdx].meetingPointName}
             for prayerSlot in query.all()]
+        self.closeSession(session)
+        return result
 
     def getLifegroup(self):
         '''
@@ -285,7 +319,6 @@ class DatabaseController(object):
             warriorName: warriorName
         }]
         '''
-
         query = PrayerSlotWarrior\
             .query.order_by(PrayerSlotWarrior.prayerSlotId)\
             .join(PrayerSlot, PrayerSlotWarrior.prayerSlotId == PrayerSlot.id)\

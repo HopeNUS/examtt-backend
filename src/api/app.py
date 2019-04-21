@@ -1,6 +1,5 @@
-import os
 from flask import Flask
-from .config import Config, DevelopementConfig
+from .config import config
 from .database import db
 from .routes import defineRoutes
 from ..logic.locationLogicController import LocationLogicController
@@ -8,11 +7,7 @@ from ..logic.studentLogicController import StudentLogicController
 from ..logic.warriorLogicController import WarriorLogicController
 
 
-def create_app():
-    config = DevelopementConfig
-    if os.environ.get('FLASK_ENV', "developement") == "production":
-        config = Config
-
+def create_app(config):
     app = Flask(__name__)
     app.config.from_object(config)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -20,7 +15,7 @@ def create_app():
     return app
 
 
-app = create_app()
+app = create_app(config)
 locationLogicController = LocationLogicController(db)
 studentLogicController = StudentLogicController(db)
 warriorLogicController = WarriorLogicController(db)
