@@ -1,7 +1,6 @@
 from sqlalchemy import exc
 from psycopg2.errors import UniqueViolation
 from ..data.locationMeetingPoint import LocationMeetingPoint
-from ..api.database import Session
 from .model.lifegroup import Lifegroup
 from .model.student import Student
 from .model.module import Module
@@ -20,11 +19,11 @@ from ..exceptions.uniqueException import UniqueException
 
 
 class DatabaseController(object):
-    def __init__(self, db):
-        self.db = db
+    def __init__(self, Session):
+        self.Session = Session
 
     def startSession(self):
-        return Session()
+        return self.Session()
 
     def closeSession(self, session):
         session.close()
@@ -275,7 +274,9 @@ class DatabaseController(object):
             .join(Location, PrayerSlot.locationName == Location.name)\
 
         if meetingPoint:
-            query = query.filter(Location.meetingPointName == meetingPoint)
+            query = query.filter(Location.name == meetingPoint)
+
+        print(query)
 
         result = [{
             'id': prayerSlot[prayerSlotIdx].id,

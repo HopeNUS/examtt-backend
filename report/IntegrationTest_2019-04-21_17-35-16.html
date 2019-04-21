@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unittest Results</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="text-capitalize">Unittest Results</h2>
+                <p class='attribute'><strong>Start Time: </strong>2019-04-21 17:35:16</p>
+                <p class='attribute'><strong>Duration: </strong>213 ms</p>
+                <p class='attribute'><strong>Summary: </strong>Total: 12, Pass: 12</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-10">
+                <table class='table table-hover table-responsive'>
+                    <thead>
+                        <tr>
+                            <th>tests.database.test_DatabaseController.Test_DatebaseController</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_addExamInvalidLifegroup</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_addExamValid</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                                <button class="btn btn-default btn-xs">View</button>
+                            </td>
+                        </tr>
+                        <tr style="display:none;">
+                            <td class="col-xs-9" colspan="3"><p>2019-04-21 17:35:17,002 INFO sqlalchemy.engine.base.Engine select version()
+2019-04-21 17:35:17,002 INFO sqlalchemy.engine.base.Engine {}
+2019-04-21 17:35:17,003 INFO sqlalchemy.engine.base.Engine select current_schema()
+2019-04-21 17:35:17,003 INFO sqlalchemy.engine.base.Engine {}
+2019-04-21 17:35:17,003 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS VARCHAR(60)) AS anon_1
+2019-04-21 17:35:17,003 INFO sqlalchemy.engine.base.Engine {}
+2019-04-21 17:35:17,004 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS VARCHAR(60)) AS anon_1
+2019-04-21 17:35:17,004 INFO sqlalchemy.engine.base.Engine {}
+2019-04-21 17:35:17,005 INFO sqlalchemy.engine.base.Engine show standard_conforming_strings
+2019-04-21 17:35:17,005 INFO sqlalchemy.engine.base.Engine {}
+2019-04-21 17:35:17,006 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2019-04-21 17:35:17,006 INFO sqlalchemy.engine.base.Engine SELECT student.name AS student_name, student.lifegroup AS student_lifegroup 
+FROM student 
+WHERE student.name = %(name_1)s 
+ LIMIT %(param_1)s
+2019-04-21 17:35:17,006 INFO sqlalchemy.engine.base.Engine {'name_1': 'unittest', 'param_1': 1}
+2019-04-21 17:35:17,033 INFO sqlalchemy.engine.base.Engine SELECT student.name AS student_name, student.lifegroup AS student_lifegroup 
+FROM student 
+WHERE student.name = %(name_1)s 
+ LIMIT %(param_1)s
+2019-04-21 17:35:17,033 INFO sqlalchemy.engine.base.Engine {'name_1': 'unittest2', 'param_1': 1}
+</p>
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_addPrayerWarriorSubscription</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_deletePrayerWarriorSubscription</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                                <button class="btn btn-default btn-xs">View</button>
+                            </td>
+                        </tr>
+                        <tr style="display:none;">
+                            <td class="col-xs-9" colspan="3"><p>2019-04-21 17:35:17,087 INFO sqlalchemy.engine.base.Engine SELECT prayer_slot_warrior."prayerSlotId" AS "prayer_slot_warrior_prayerSlotId", prayer_slot_warrior."warriorName" AS "prayer_slot_warrior_warriorName" 
+FROM prayer_slot_warrior 
+WHERE prayer_slot_warrior."prayerSlotId" = %(prayerSlotId_1)s AND prayer_slot_warrior."warriorName" = %(warriorName_1)s 
+ LIMIT %(param_1)s
+2019-04-21 17:35:17,087 INFO sqlalchemy.engine.base.Engine {'prayerSlotId_1': 2, 'warriorName_1': 'unittestDel', 'param_1': 1}
+</p>
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_retrieveExam</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_retrievePrayerSlot</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                                <button class="btn btn-default btn-xs">View</button>
+                            </td>
+                        </tr>
+                        <tr style="display:none;">
+                            <td class="col-xs-9" colspan="3"><p>SELECT date_time.id AS date_time_id, date_time."dateDate" AS "date_time_dateDate", date_time."dateMonth" AS "date_time_dateMonth", date_time."timeHour" AS "date_time_timeHour", date_time."timeMinute" AS "date_time_timeMinute", prayer_slot.id AS prayer_slot_id, prayer_slot."locationName" AS "prayer_slot_locationName", prayer_slot."dateTimeId" AS "prayer_slot_dateTimeId", location.name AS location_name, location."meetingPointName" AS "location_meetingPointName" 
+FROM date_time JOIN prayer_slot ON prayer_slot."dateTimeId" = date_time.id JOIN location ON prayer_slot."locationName" = location.name 
+WHERE date_time."dateDate" = %(dateDate_1)s AND date_time."dateMonth" = %(dateMonth_1)s
+SELECT date_time.id AS date_time_id, date_time."dateDate" AS "date_time_dateDate", date_time."dateMonth" AS "date_time_dateMonth", date_time."timeHour" AS "date_time_timeHour", date_time."timeMinute" AS "date_time_timeMinute", prayer_slot.id AS prayer_slot_id, prayer_slot."locationName" AS "prayer_slot_locationName", prayer_slot."dateTimeId" AS "prayer_slot_dateTimeId", location.name AS location_name, location."meetingPointName" AS "location_meetingPointName" 
+FROM date_time JOIN prayer_slot ON prayer_slot."dateTimeId" = date_time.id JOIN location ON prayer_slot."locationName" = location.name 
+WHERE date_time."dateDate" = %(dateDate_1)s AND date_time."dateMonth" = %(dateMonth_1)s AND date_time."timeHour" = %(timeHour_1)s AND date_time."timeMinute" = %(timeMinute_1)s
+SELECT date_time.id AS date_time_id, date_time."dateDate" AS "date_time_dateDate", date_time."dateMonth" AS "date_time_dateMonth", date_time."timeHour" AS "date_time_timeHour", date_time."timeMinute" AS "date_time_timeMinute", prayer_slot.id AS prayer_slot_id, prayer_slot."locationName" AS "prayer_slot_locationName", prayer_slot."dateTimeId" AS "prayer_slot_dateTimeId", location.name AS location_name, location."meetingPointName" AS "location_meetingPointName" 
+FROM date_time JOIN prayer_slot ON prayer_slot."dateTimeId" = date_time.id JOIN location ON prayer_slot."locationName" = location.name 
+WHERE date_time."dateDate" = %(dateDate_1)s AND date_time."dateMonth" = %(dateMonth_1)s
+SELECT date_time.id AS date_time_id, date_time."dateDate" AS "date_time_dateDate", date_time."dateMonth" AS "date_time_dateMonth", date_time."timeHour" AS "date_time_timeHour", date_time."timeMinute" AS "date_time_timeMinute", prayer_slot.id AS prayer_slot_id, prayer_slot."locationName" AS "prayer_slot_locationName", prayer_slot."dateTimeId" AS "prayer_slot_dateTimeId", location.name AS location_name, location."meetingPointName" AS "location_meetingPointName" 
+FROM date_time JOIN prayer_slot ON prayer_slot."dateTimeId" = date_time.id JOIN location ON prayer_slot."locationName" = location.name 
+WHERE date_time."dateDate" = %(dateDate_1)s AND date_time."dateMonth" = %(dateMonth_1)s AND date_time."timeHour" = %(timeHour_1)s AND date_time."timeMinute" = %(timeMinute_1)s AND location.name = %(name_1)s
+</p>
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_retrieveStudentsModule</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                Total: 7, Pass: 7 -- Duration: 159 ms
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-10">
+                <table class='table table-hover table-responsive'>
+                    <thead>
+                        <tr>
+                            <th>tests.logic.test_StudentLogicController.Test_StudentLogicController</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_addStudentExamSchedule</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                                <button class="btn btn-default btn-xs">View</button>
+                            </td>
+                        </tr>
+                        <tr style="display:none;">
+                            <td class="col-xs-9" colspan="3"><p>2019-04-21 17:35:17,117 INFO sqlalchemy.engine.base.Engine SELECT student.name AS student_name, student.lifegroup AS student_lifegroup 
+FROM student 
+WHERE student.name = %(name_1)s 
+ LIMIT %(param_1)s
+2019-04-21 17:35:17,117 INFO sqlalchemy.engine.base.Engine {'name_1': 'integration1', 'param_1': 1}
+</p>
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_getLifegroup</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                                <button class="btn btn-default btn-xs">View</button>
+                            </td>
+                        </tr>
+                        <tr style="display:none;">
+                            <td class="col-xs-9" colspan="3"><p>2019-04-21 17:35:17,141 INFO sqlalchemy.engine.base.Engine SELECT lifegroup.name AS lifegroup_name, student_1.name AS student_1_name, student_1.lifegroup AS student_1_lifegroup 
+FROM lifegroup LEFT OUTER JOIN student AS student_1 ON lifegroup.name = student_1.lifegroup ORDER BY lifegroup.name
+2019-04-21 17:35:17,141 INFO sqlalchemy.engine.base.Engine {}
+</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                Total: 2, Pass: 2 -- Duration: 26 ms
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-10">
+                <table class='table table-hover table-responsive'>
+                    <thead>
+                        <tr>
+                            <th>tests.logic.test_WarriorLogicController.Test_StudentLogicController</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_addAnddeletePrayerSlotWarrior</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                                <button class="btn btn-default btn-xs">View</button>
+                            </td>
+                        </tr>
+                        <tr style="display:none;">
+                            <td class="col-xs-9" colspan="3"><p>2019-04-21 17:35:17,155 INFO sqlalchemy.engine.base.Engine SELECT prayer_slot_warrior."prayerSlotId" AS "prayer_slot_warrior_prayerSlotId", prayer_slot_warrior."warriorName" AS "prayer_slot_warrior_warriorName" 
+FROM prayer_slot_warrior 
+WHERE prayer_slot_warrior."prayerSlotId" = %(prayerSlotId_1)s AND prayer_slot_warrior."warriorName" = %(warriorName_1)s 
+ LIMIT %(param_1)s
+2019-04-21 17:35:17,155 INFO sqlalchemy.engine.base.Engine {'prayerSlotId_1': 2, 'warriorName_1': 'integration1', 'param_1': 1}
+2019-04-21 17:35:17,159 INFO sqlalchemy.engine.base.Engine SELECT prayer_slot_warrior."prayerSlotId" AS "prayer_slot_warrior_prayerSlotId", prayer_slot_warrior."warriorName" AS "prayer_slot_warrior_warriorName" 
+FROM prayer_slot_warrior 
+WHERE prayer_slot_warrior."prayerSlotId" = %(prayerSlotId_1)s AND prayer_slot_warrior."warriorName" = %(warriorName_1)s 
+ LIMIT %(param_1)s
+2019-04-21 17:35:17,159 INFO sqlalchemy.engine.base.Engine {'prayerSlotId_1': 1, 'warriorName_1': 'integration1', 'param_1': 1}
+</p>
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_getPrayerSlotTimetable</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                                <button class="btn btn-default btn-xs">View</button>
+                            </td>
+                        </tr>
+                        <tr style="display:none;">
+                            <td class="col-xs-9" colspan="3"><p>SELECT date_time.id AS date_time_id, date_time."dateDate" AS "date_time_dateDate", date_time."dateMonth" AS "date_time_dateMonth", date_time."timeHour" AS "date_time_timeHour", date_time."timeMinute" AS "date_time_timeMinute", prayer_slot.id AS prayer_slot_id, prayer_slot."locationName" AS "prayer_slot_locationName", prayer_slot."dateTimeId" AS "prayer_slot_dateTimeId", location.name AS location_name, location."meetingPointName" AS "location_meetingPointName" 
+FROM date_time JOIN prayer_slot ON prayer_slot."dateTimeId" = date_time.id JOIN location ON prayer_slot."locationName" = location.name 
+WHERE date_time."dateDate" = %(dateDate_1)s AND date_time."dateMonth" = %(dateMonth_1)s
+2019-04-21 17:35:17,163 INFO sqlalchemy.engine.base.Engine SELECT prayer_slot_warrior."prayerSlotId" AS "prayer_slot_warrior_prayerSlotId", prayer_slot_warrior."warriorName" AS "prayer_slot_warrior_warriorName" 
+FROM prayer_slot_warrior JOIN prayer_slot ON prayer_slot_warrior."prayerSlotId" = prayer_slot.id JOIN date_time ON prayer_slot."dateTimeId" = date_time.id 
+WHERE date_time."dateDate" = %(dateDate_1)s AND date_time."dateMonth" = %(dateMonth_1)s ORDER BY prayer_slot_warrior."prayerSlotId"
+2019-04-21 17:35:17,163 INFO sqlalchemy.engine.base.Engine {'dateDate_1': '02', 'dateMonth_1': 'FEB'}
+</p>
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_getStudentExamTimetable</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                Total: 3, Pass: 3 -- Duration: 27 ms
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('td').on('click', '.btn', function(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var $this = $(this);
+                var $nextRow = $this.closest('tr').next('tr');
+                $nextRow.slideToggle("fast");
+                $this.text(function(i, text){
+                    if (text === 'View') {
+                        return 'Hide';
+                    } else {
+                        return 'View';
+                    };
+                });
+            });
+        });
+    </script>
+</body>
+</html

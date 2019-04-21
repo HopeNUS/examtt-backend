@@ -1,6 +1,6 @@
 from flask import Flask
 from .config import config
-from .database import db
+from .database import db, makeSessionMaker
 from .routes import defineRoutes
 from ..logic.locationLogicController import LocationLogicController
 from ..logic.studentLogicController import StudentLogicController
@@ -16,9 +16,10 @@ def create_app(config):
 
 
 app = create_app(config)
-locationLogicController = LocationLogicController(db)
-studentLogicController = StudentLogicController(db)
-warriorLogicController = WarriorLogicController(db)
+Session = makeSessionMaker(config.SQLALCHEMY_DATABASE_URI)
+locationLogicController = LocationLogicController(Session)
+studentLogicController = StudentLogicController(Session)
+warriorLogicController = WarriorLogicController(Session)
 defineRoutes(app, studentLogicController, warriorLogicController)
 
 if __name__ == '__main__':
