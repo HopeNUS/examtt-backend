@@ -31,13 +31,13 @@
 5) execute `python -m src.dbManage db migrate` to **generate the code** to create the database
 6) execute `python -m src.dbManage db upgrade` to create the database
 
-### Starting the server
+## Starting the server
 
 1) make sure you are using the correct virtual environment
 2) cd to `[PROJECT_DIRECTORY]`
 3) execute `python -m src.api.app`
 
-### Running tests
+## Running tests
 
 + Test Driver: python unittest
 
