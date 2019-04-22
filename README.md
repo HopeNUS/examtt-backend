@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/HopeNUS/examtt-backend.svg?branch=master)](https://travis-ci.com/HopeNUS/examtt-backend)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1ba933562d6f486ba2d87d21273b5857)](https://www.codacy.com/app/HopeNUS/examtt-backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HopeNUS/examtt-backend&amp;utm_campaign=Badge_Grade)
+
 ## Setting up project development
 
 1. Clone this repository
