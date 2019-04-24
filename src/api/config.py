@@ -19,5 +19,5 @@ class TestConfig(DevelopementConfig):
 
 
 config = DevelopementConfig
-if os.environ.get('FLASK_ENV', "developement") == "production":
+if os.environ.get('FLASK_ENV', "development") == "production":
     config = Config
