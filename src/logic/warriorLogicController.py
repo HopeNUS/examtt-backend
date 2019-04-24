@@ -30,7 +30,8 @@ class WarriorLogicController(LogicController):
                 self.getTimeFormatted(exam['hour'], exam['minute']),
                 self.getDateFormatted(exam['date'], exam['month']),
                 exam['location'],
-                exam['meetingPoint'])
+                exam['meetingPoint'],
+                exam['prayerSlotId'])
 
     def getPrayerSlotTimeTable(
             self, date, month, time=None, meetingPoint=None):

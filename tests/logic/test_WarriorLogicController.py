@@ -17,7 +17,8 @@ class Test_StudentLogicController(unittest.TestCase):
                         "id": 5,
                         "location": "integration",
                         "meetingPoint": null,
-                        "time": "0303"
+                        "time": "0303",
+                        "prayerSlotId": 5
                     }
                 ],
                 "students":
