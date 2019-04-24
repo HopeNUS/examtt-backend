@@ -19,7 +19,7 @@ class WarriorLogicController(LogicController):
         students = self.getDb().getStudentsModule((date, month, ))
         for student in students:
             examTimetable.addStudent(
-                student['name'], student['lifegroup'], student['module'])
+                student['name'], student['lifegroup'], student['examId'])
 
     def populateExamTimeTableExam(self, date, month, examTimetable):
         exams = self.getDb().getExamTimetable(date, month)

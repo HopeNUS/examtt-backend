@@ -56,20 +56,6 @@ class Test_DatebaseController(unittest.TestCase):
                 day, month, hour, minute, loc)
             )
 
-        moduleCode = "unittest3"
-        day = "02"
-        month = "JAN"
-        hour = "02"
-        minute = "00"
-        loc = "unittest3"
-        studentName = "unittest"
-        lifegroup = "Others"
-        self.assertRaises(
-            UniqueException,
-            self.dbCtrl.addExam,
-            studentName, lifegroup, moduleCode,
-            day, month, hour, minute, loc)
-
     def test_addExamInvalidLifegroup(self):
         self.assertRaises(
             ForeignKeyException,
