@@ -24,10 +24,10 @@ class Test_StudentLogicController(unittest.TestCase):
                 [
                     {
                         "lifegroup": "Others",
-                        "module": [
-                            "integration2"
+                        "exam": [
+                            6
                         ],
-                        "name": "integration"
+                        "name": "integration1"
                     }
                 ]
             }''')
@@ -35,6 +35,7 @@ class Test_StudentLogicController(unittest.TestCase):
             warriorLogicController.getExamTimeTable("03", "FEB")
             .serialise())
         self.assertEqual(actual['exams'], expected['exams'])
+        self.assertEqual(actual['students'], expected['students'])
 
     def test_getPrayerSlotTimetable(self):
         expected = json.loads('''{
