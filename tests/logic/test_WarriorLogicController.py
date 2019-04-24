@@ -14,7 +14,7 @@ class Test_StudentLogicController(unittest.TestCase):
                     {
                         "code": "integration2",
                         "date": "03FEB",
-                        "id": 6,
+                        "id": 5,
                         "location": "integration",
                         "meetingPoint": null,
                         "time": "0303"
@@ -25,7 +25,7 @@ class Test_StudentLogicController(unittest.TestCase):
                     {
                         "lifegroup": "Others",
                         "exam": [
-                            6
+                            5
                         ],
                         "name": "integration1"
                     }
@@ -41,11 +41,11 @@ class Test_StudentLogicController(unittest.TestCase):
         expected = json.loads('''{
             "prayerSlots": [
                 {
-                    "date": "02FEB",
+                    "date": "03FEB",
                     "id": 5,
                     "location": "integration",
                     "meetingPoint": null,
-                    "time": "0202"
+                    "time": "0303"
                 }
             ],
             "prayerSlotsWarriors": [
@@ -53,7 +53,7 @@ class Test_StudentLogicController(unittest.TestCase):
             ]
         }''')
         actual = json.loads(
-            warriorLogicController.getPrayerSlotTimeTable("02", "FEB")
+            warriorLogicController.getPrayerSlotTimeTable("03", "FEB")
             .serialise())
         self.assertEqual(sorted(actual.items()), sorted(expected.items()))
 
