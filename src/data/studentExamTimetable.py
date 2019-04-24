@@ -11,14 +11,17 @@ class StudentExamTimetable(object):
         self.exams = []
         self.studentsMap = {}
 
-    def addExam(self, id, code, time, date, location, meetingPoint):
+    def addExam(
+            self, id, code, time, date, location,
+            meetingPoint, prayerSlotId):
         self.exams.append({
             'id': id,
             'code': code,
             'date': date,
             'time': time,
             'location': location,
-            'meetingPoint': meetingPoint})
+            'meetingPoint': meetingPoint,
+            'prayerSlotId': prayerSlotId})
 
     def addStudent(self, name, lifegroup, exam):
         if name not in self.studentsMap:

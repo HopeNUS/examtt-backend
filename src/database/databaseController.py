@@ -169,6 +169,7 @@ class DatabaseController(object):
             month: month,
             location: location,
             meetingPoint: meetingPoint,
+            prayerSlotId: prayerSlotId
         }, ]
 
         No changes made to database
@@ -186,7 +187,8 @@ class DatabaseController(object):
             'date': exam[dateTimeIdx].dateDate,
             'month': exam[dateTimeIdx].dateMonth,
             'location': exam[prayerSlotIdx].locationName,
-            'meetingPoint': exam[locationIdx].meetingPointName}
+            'meetingPoint': exam[locationIdx].meetingPointName,
+            'prayerSlotId': exam[prayerSlotIdx].id}
             for exam in session.query(
                 DateTime, PrayerSlot, Location, Exam)
             .filter_by(dateDate=date, dateMonth=month)
