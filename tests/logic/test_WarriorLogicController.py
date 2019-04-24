@@ -14,7 +14,7 @@ class Test_StudentLogicController(unittest.TestCase):
                     {
                         "code": "integration2",
                         "date": "03FEB",
-                        "id": 6,
+                        "id": 5,
                         "location": "integration",
                         "meetingPoint": null,
                         "time": "0303"
@@ -24,10 +24,10 @@ class Test_StudentLogicController(unittest.TestCase):
                 [
                     {
                         "lifegroup": "Others",
-                        "module": [
-                            "integration2"
+                        "exam": [
+                            5
                         ],
-                        "name": "integration"
+                        "name": "integration1"
                     }
                 ]
             }''')
@@ -35,16 +35,17 @@ class Test_StudentLogicController(unittest.TestCase):
             warriorLogicController.getExamTimeTable("03", "FEB")
             .serialise())
         self.assertEqual(actual['exams'], expected['exams'])
+        self.assertEqual(actual['students'], expected['students'])
 
     def test_getPrayerSlotTimetable(self):
         expected = json.loads('''{
             "prayerSlots": [
                 {
-                    "date": "02FEB",
+                    "date": "03FEB",
                     "id": 5,
                     "location": "integration",
                     "meetingPoint": null,
-                    "time": "0202"
+                    "time": "0303"
                 }
             ],
             "prayerSlotsWarriors": [
@@ -52,7 +53,7 @@ class Test_StudentLogicController(unittest.TestCase):
             ]
         }''')
         actual = json.loads(
-            warriorLogicController.getPrayerSlotTimeTable("02", "FEB")
+            warriorLogicController.getPrayerSlotTimeTable("03", "FEB")
             .serialise())
         self.assertEqual(sorted(actual.items()), sorted(expected.items()))
 
