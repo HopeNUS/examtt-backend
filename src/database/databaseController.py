@@ -232,6 +232,7 @@ class DatabaseController(object):
         result = [{
             'name': studentModule[studentIdx].name,
             'lifegroup': studentModule[studentIdx].lifegroup,
+            'examId': studentModule[examIdx].id,
             'module': studentModule[examIdx].moduleCode}
             for studentModule in query.all()]
         self.closeSession(session)
