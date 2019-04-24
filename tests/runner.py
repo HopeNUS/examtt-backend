@@ -19,3 +19,5 @@ if len(sys.argv) == 2 and sys.argv[1] == "html":
         report_name="IntegrationTest",
         combine_reports=True)
 result = runner.run(suite)
+if result.failures:
+    exit(-1)
