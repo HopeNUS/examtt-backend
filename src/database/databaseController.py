@@ -4,7 +4,7 @@ from ..data.locationMeetingPoint import LocationMeetingPoint
 from .model.lifegroup import Lifegroup
 from .model.student import Student
 from .model.module import Module
-from .model.studentModule import StudentModule
+from .model.studentExam import StudentExam
 from .model.date import Date
 from .model.time import Time
 from .model.dateTime import DateTime
@@ -83,9 +83,6 @@ class DatabaseController(object):
         self.getOrCreate(
             session, Module, code=moduleCode)
         self.getOrCreate(
-            session, StudentModule,
-            studentName=studentName, moduleCode=moduleCode)
-        self.getOrCreate(
             session, Date, date=day, month=month)
         self.getOrCreate(
             session, Time, hour=hour, minute=minute)
@@ -97,9 +94,13 @@ class DatabaseController(object):
         prayerSlot, _ = self.getOrCreate(
             session, PrayerSlot,
             locationName=location, dateTimeId=dateTime.id)
-        self.getOrCreate(
+        exam, _ = self.getOrCreate(
             session, Exam,
             moduleCode=moduleCode, prayerSlotId=prayerSlot.id)
+        print(exam)
+        self.getOrCreate(
+            session, StudentExam,
+            studentName=studentName, examId=exam.id)
         session.commit()
         self.closeSession(session)
         return True
@@ -213,12 +214,12 @@ class DatabaseController(object):
         '''
         session = self.startSession()
         studentIdx = 0
-        studentModuleIdx = 1
+        examIdx = 1
 
-        query = session.query(Student, StudentModule)\
-            .join(StudentModule, Student.name == StudentModule.studentName)
+        query = session.query(Student, Exam)\
+            .join(StudentExam, Student.name == StudentExam.studentName)
         query = query\
-            .join(Exam, Exam.moduleCode == StudentModule.moduleCode)\
+            .join(Exam, Exam.id == StudentExam.examId)\
             .join(PrayerSlot, Exam.prayerSlotId == PrayerSlot.id)
         if location:
             query = query.filter_by(locationName=location)
@@ -231,7 +232,7 @@ class DatabaseController(object):
         result = [{
             'name': studentModule[studentIdx].name,
             'lifegroup': studentModule[studentIdx].lifegroup,
-            'module': studentModule[studentModuleIdx].moduleCode}
+            'module': studentModule[examIdx].moduleCode}
             for studentModule in query.all()]
         self.closeSession(session)
         return result

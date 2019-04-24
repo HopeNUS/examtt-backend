@@ -10,7 +10,7 @@ class Student(db.Model):
         db.ForeignKey('lifegroup.name', ondelete="SET NULL"),
         nullable=True)
     modules = db.relationship(
-        'StudentModule',
+        'StudentExam',
         backref='student',
         lazy=True,
         cascade="all, delete-orphan")
