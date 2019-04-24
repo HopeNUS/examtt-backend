@@ -1,22 +1,22 @@
 from src.api.database import db
 
 
-class StudentModule(db.Model):
-    __tablename__ = "studentModule"
+class StudentExam(db.Model):
+    __tablename__ = "studentExam"
 
     id = db.Column(db.Integer, primary_key=True)
     studentName = db.Column(
         db.String(),
         db.ForeignKey('student.name', ondelete="CASCADE"),
         nullable=False)
-    moduleCode = db.Column(
-        db.String(),
-        db.ForeignKey('module.code', ondelete="CASCADE"),
+    examId = db.Column(
+        db.Integer,
+        db.ForeignKey('exam.id', ondelete="CASCADE"),
         nullable=False)
 
-    def __init__(self, studentName, moduleCode):
+    def __init__(self, studentName, examId):
         self.studentName = studentName
-        self.moduleCode = moduleCode
+        self.examId = examId
 
     def __repr__(self):
         return '<StudentModule: {}>'.format(self.id)
@@ -25,5 +25,5 @@ class StudentModule(db.Model):
         return {
             'id': self.id,
             'studentName': self.studentName,
-            'moduleCode': self.moduleCode,
+            'examId': self.examId,
         }

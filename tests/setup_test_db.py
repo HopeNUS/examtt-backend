@@ -14,7 +14,6 @@ db.init_app(testApp)
 from src.database.model.lifegroup import Lifegroup
 from src.database.model.student import Student
 from src.database.model.module import Module
-from src.database.model.studentModule import StudentModule
 from src.database.model.date import Date
 from src.database.model.time import Time
 from src.database.model.dateTime import DateTime
@@ -24,6 +23,7 @@ from src.database.model.warrior import Warrior
 from src.database.model.prayerSlot import PrayerSlot
 from src.database.model.prayerSlotWarrior import PrayerSlotWarrior
 from src.database.model.exam import Exam
+from src.database.model.studentExam import StudentExam
 
 
 if __name__ == "__main__":

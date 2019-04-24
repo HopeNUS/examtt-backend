@@ -8,12 +8,16 @@ class Exam(db.Model):
     moduleCode = db.Column(
         db.String(),
         db.ForeignKey('module.code', ondelete="CASCADE"),
-        unique=True,
         nullable=False)
     prayerSlotId = db.Column(
         db.Integer,
         db.ForeignKey('prayer_slot.id', ondelete="CASCADE"),
         nullable=False)
+    students = db.relationship(
+        'StudentExam',
+        backref='exam',
+        lazy=True,
+        cascade="all, delete-orphan")
 
     def __init__(self, moduleCode, prayerSlotId):
         self.moduleCode = moduleCode
